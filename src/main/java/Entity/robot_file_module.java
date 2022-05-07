@@ -19,6 +19,11 @@ public class robot_file_module {
 
     public robot_file_module() {
     }
+    public robot_file_module(String user_agent, List<String> allow, List<String> disallow) {
+        User_agent = user_agent;
+        Allow = allow;
+        Disallow = disallow;
+    }
     
 
     public String getUser_agent() {
