@@ -24,6 +24,17 @@ public class Scan_Backup_And_Unreferenced_File {
     public String payloadx;
     public String signaturex;
 
+    public boolean Scan(String domain) {
+        Scan_Backup_And_Unreferenced_File scan_bakk = new Scan_Backup_And_Unreferenced_File();
+        List<String> list_file = scan_bakk.CheckBackupFile(domain);
+        if (list_file.size() == 0) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
     public List<String> CheckBackupFile(String domain) {
         List<String> ListLink = new ArrayList<>();
         try {

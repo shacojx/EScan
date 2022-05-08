@@ -4,6 +4,10 @@
  */
 package View;
 
+import FunctionPlus.ScanVuln;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author shacojx
@@ -18,7 +22,29 @@ public class EScan extends javax.swing.JFrame {
         this.setTitle("EScan");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setNumRows(0);
         
+    }
+    
+    public static boolean isStop = false;
+    public static boolean isDone = false;
+    
+    public static void GhiLog(String data) {
+        new Thread(() -> {
+            logconsole.setText(data + "\n" + logconsole.getText());
+        }).start();
+    }
+    
+    public static void GhiLogInfo(String data) {
+        new Thread(() -> {
+            loginfo.setText("");
+            int lastIndex = loginfo.getText().length();
+            if (lastIndex > 100000) {
+                lastIndex = 100000;
+            }
+            loginfo.setText(data + "\n" + loginfo.getText().substring(0, lastIndex));
+        }).start();
     }
 
     /**
@@ -34,19 +60,19 @@ public class EScan extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         target = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jTextField4 = new javax.swing.JTextField();
+        loginfo = new javax.swing.JTextArea();
+        linklogin = new javax.swing.JTextField();
+        username = new javax.swing.JTextField();
+        passwd = new javax.swing.JPasswordField();
+        cookie = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        scan = new javax.swing.JButton();
+        stop = new javax.swing.JButton();
+        clear = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
-        jTextField1 = new javax.swing.JTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        logconsole = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
@@ -58,27 +84,75 @@ public class EScan extends javax.swing.JFrame {
                 targetMouseClicked(evt);
             }
         });
+        target.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                targetActionPerformed(evt);
+            }
+        });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("----- ESCAN -------\n-- Scan Web Application Security --\n----- Mini log ----");
-        jScrollPane1.setViewportView(jTextArea1);
+        loginfo.setEditable(false);
+        loginfo.setBackground(new java.awt.Color(0, 0, 0));
+        loginfo.setColumns(20);
+        loginfo.setForeground(new java.awt.Color(51, 255, 51));
+        loginfo.setLineWrap(true);
+        loginfo.setRows(5);
+        loginfo.setText("----- ESCAN -------\n-- Scan Web Application Security --\n");
+        jScrollPane1.setViewportView(loginfo);
 
-        jTextField2.setText("Url Login");
+        linklogin.setText("Url Login");
+        linklogin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                linkloginMouseClicked(evt);
+            }
+        });
 
-        jTextField3.setText("User");
+        username.setText("User");
+        username.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                usernameMouseClicked(evt);
+            }
+        });
 
-        jPasswordField1.setText("Pass");
+        passwd.setText("pass");
+        passwd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                passwdMouseClicked(evt);
+            }
+        });
 
-        jTextField4.setText("Cookie");
+        cookie.setText("Cookie");
+        cookie.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cookieMouseClicked(evt);
+            }
+        });
 
-        jButton4.setText("Scan");
+        scan.setBackground(new java.awt.Color(255, 255, 51));
+        scan.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        scan.setText("Scan");
+        scan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                scanActionPerformed(evt);
+            }
+        });
 
-        jButton5.setText("Save");
+        stop.setBackground(new java.awt.Color(255, 255, 51));
+        stop.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        stop.setText("Stop");
+        stop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopActionPerformed(evt);
+            }
+        });
 
-        jButton6.setText("Stop");
-
-        jButton1.setText("Clear");
+        clear.setBackground(new java.awt.Color(255, 255, 102));
+        clear.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        clear.setText("Clear");
+        clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -87,23 +161,20 @@ public class EScan extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap(16, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton6, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(scan, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(stop, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(clear, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jButton4)
+                .addComponent(scan)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addComponent(stop)
+                .addGap(46, 46, 46)
+                .addComponent(clear)
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -114,13 +185,13 @@ public class EScan extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(target, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(linklogin, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jPasswordField1))
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(passwd))
+                        .addComponent(cookie, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -128,7 +199,6 @@ public class EScan extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,19 +206,29 @@ public class EScan extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(target, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(linklogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(passwd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cookie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jTextField1.setText("jTextField1");
-        jTabbedPane2.addTab("Log", jTextField1);
+        logconsole.setEditable(false);
+        logconsole.setBackground(new java.awt.Color(0, 0, 0));
+        logconsole.setColumns(2000000000);
+        logconsole.setForeground(new java.awt.Color(51, 255, 102));
+        logconsole.setLineWrap(true);
+        logconsole.setRows(2000000000);
+        jScrollPane3.setViewportView(logconsole);
+
+        jTabbedPane2.addTab("Log", jScrollPane3);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -158,27 +238,27 @@ public class EScan extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "URL", "Vuln", "Risk", "Reference"
             }
         ));
         jScrollPane2.setViewportView(jTable1);
 
-        jTabbedPane2.addTab("Vuln", jScrollPane2);
+        jTabbedPane2.addTab("Vulnerable", jScrollPane2);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE))
+                .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -214,6 +294,109 @@ public class EScan extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.target.setText("");
     }//GEN-LAST:event_targetMouseClicked
+    
+    public static void addRowData(String url, String vul, String risk, String ref) {        
+        new Thread(() -> {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.addRow(new Object[]{url, vul, risk, ref});
+        }).start();
+        
+    }
+    private void scanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scanActionPerformed
+        // TODO add your handling code here:
+        isStop = false;
+        JOptionPane.showMessageDialog(this, "Started Scan");
+        new Thread(() -> {
+            
+            String target = null;
+            String uname = null;
+            String pwd = null;
+            String linkadmin = null;
+            String cookie = null;
+            
+            if (this.target.getText().trim().equalsIgnoreCase("Url website") || this.target.getText().trim().equalsIgnoreCase("") || this.target.getText() == null) {
+                target = null;
+            } else {
+                target = this.target.getText();
+            }
+            if (this.username.getText().trim().equalsIgnoreCase("User") || this.username.getText().trim().equalsIgnoreCase("") || this.username.getText() == null) {
+                uname = null;
+            } else {
+                uname = this.username.getText();
+            }
+            if (this.passwd.getText().trim().equalsIgnoreCase("pass") || this.passwd.getText().trim().equalsIgnoreCase("") || this.passwd.getText() == null) {
+                pwd = null;
+            } else {
+                pwd = this.passwd.getText();
+            }
+            if (this.linklogin.getText().trim().equalsIgnoreCase("Url Login") || this.linklogin.getText().trim().equalsIgnoreCase("") || this.linklogin.getText() == null) {
+                linkadmin = null;
+            } else {
+                linkadmin = this.linklogin.getText();
+            }
+            if (this.cookie.getText().trim().equalsIgnoreCase("Cookie") || this.cookie.getText().trim().equalsIgnoreCase("") || this.cookie.getText() == null) {
+                cookie = null;
+            } else {
+                cookie = this.cookie.getText();
+            }
+            
+            ScanVuln scanvuln = new ScanVuln();
+            scanvuln.scan(target, uname, pwd, linkadmin, cookie);
+            if (isDone == true) {
+                JOptionPane.showMessageDialog(this, "DONE SCAN !!!");
+            }
+            
+        }).start();
+        
+
+    }//GEN-LAST:event_scanActionPerformed
+
+    private void stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopActionPerformed
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "Started Stop");
+        new Thread(() -> {
+            isStop = true;
+        }).start();
+    }//GEN-LAST:event_stopActionPerformed
+
+    private void linkloginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_linkloginMouseClicked
+        // TODO add your handling code here:
+        this.linklogin.setText("");
+    }//GEN-LAST:event_linkloginMouseClicked
+
+    private void usernameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usernameMouseClicked
+        // TODO add your handling code here:
+        this.username.setText("");
+    }//GEN-LAST:event_usernameMouseClicked
+
+    private void passwdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_passwdMouseClicked
+        // TODO add your handling code here:
+        this.passwd.setText("");
+    }//GEN-LAST:event_passwdMouseClicked
+
+    private void cookieMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cookieMouseClicked
+        // TODO add your handling code here:
+        this.cookie.setText("");
+    }//GEN-LAST:event_cookieMouseClicked
+
+    private void targetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_targetActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_targetActionPerformed
+
+    private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
+        // TODO add your handling code here:
+        this.target.setText("Url website");
+        this.linklogin.setText("Url Login");
+        this.username.setText("User");
+        this.passwd.setText("pass");
+        this.cookie.setText("Cookie");
+        logconsole.setText("");
+        loginfo.setText("----- ESCAN -------\n"
+                + "-- Scan Web Application Security --\n"
+                + "");
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setNumRows(0);
+    }//GEN-LAST:event_clearActionPerformed
 
     /**
      * @param args the command line arguments
@@ -251,24 +434,24 @@ public class EScan extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JButton clear;
+    private javax.swing.JTextField cookie;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    public static javax.swing.JTable jTable1;
+    private javax.swing.JTextField linklogin;
+    public static javax.swing.JTextArea logconsole;
+    public static javax.swing.JTextArea loginfo;
+    private javax.swing.JPasswordField passwd;
+    private javax.swing.JButton scan;
+    private javax.swing.JButton stop;
     private javax.swing.JTextField target;
+    private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 }

@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -19,6 +21,22 @@ import okhttp3.Response;
  * @author shacojx
  */
 public class Scan_Robots_File_Disclosure {
+    
+    public boolean Scan(String domain){
+        try {
+            Scan_Robots_File_Disclosure scan_robot = new Scan_Robots_File_Disclosure();
+            List<String> list_file = scan_robot.Robots_File_Disclosure(domain);
+            if(list_file.size() == 0){
+                return false;
+            }else{
+                return true;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Scan_Robots_File_Disclosure.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
     public List<String> Robots_File_Disclosure(String domain) throws IOException {
         String User_agent = "";
         List<String> Allow = new ArrayList<String>();

@@ -20,7 +20,7 @@ public class Scan_Host_Header_Attack {
     public String paramx;
     public String payloadx;
     public String signaturex;
-    public boolean GetHeaders(UrlOb ob, String cookies) {
+    public boolean Scan(UrlOb ob, String cookies) {
         String method = ob.getMethod();
         String param = ob.getParam();
         String url = ob.getUrl();

@@ -18,7 +18,7 @@ public class Scan_Cross_Site_Tracing {
     public String paramx;
     public String payloadx;
     public String signaturex;
-    public boolean Cross_Site_Tracing(UrlOb OB, String cookie) {
+    public boolean Scan(UrlOb OB, String cookie) {
         boolean check = false;
         try {
             String url = OB.getUrl();

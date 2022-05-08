@@ -20,7 +20,7 @@ public class Scan_Text_Files_Accounts {
     public String payloadx;
     public String signaturex = "";
 
-    public boolean Text_Files_Accounts(String domain) {
+    public boolean Scan(String domain) {
         try {
             Text_File tx = new Text_File();
             String[] InText = tx.getIntext();

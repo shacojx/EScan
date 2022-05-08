@@ -16,7 +16,7 @@ public class Scan_Session_ID_in_URL {
     public String payloadx;
     public String signaturex;
 
-    public Boolean CheckSessionIdInUrl(String param) {
+    public Boolean Scan(String param) {
         boolean check = false;
         try {
             Session_ID_in_URL sid = new Session_ID_in_URL();

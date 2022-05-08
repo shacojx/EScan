@@ -16,7 +16,7 @@ public class Scan_Clear_Text_HTTP {
     public String payloadx;
     public String signaturex;
 
-    public boolean Clear_Text_HTTP(UrlOb ob) {
+    public boolean Scan(UrlOb ob) {
         boolean check = false;
         try {
             String url = ob.getUrl();

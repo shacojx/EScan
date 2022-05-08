@@ -17,7 +17,7 @@ public class Scan_Administrative_Portals {
     public String payloadx;
     public String signaturex;
 
-    public boolean Check_Administrative_Portals(UrlOb ob) {
+    public boolean Scan(UrlOb ob) {
         boolean check = false;
         try {
             if (ob.getParam() != null) {

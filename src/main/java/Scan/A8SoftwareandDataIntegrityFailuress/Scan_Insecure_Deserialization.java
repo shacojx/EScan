@@ -25,7 +25,7 @@ public class Scan_Insecure_Deserialization {
     public String payloadx = "";
     public String signaturex = "";
 
-    public boolean Insecure_Deserialization(UrlOb ob, String cookie) {
+    public boolean Scan(UrlOb ob, String cookie) {
         try {
             Scan_Base64EncodeSecret b64 = new Scan_Base64EncodeSecret();
             String cleartext = null;

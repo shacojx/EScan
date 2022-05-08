@@ -22,7 +22,7 @@ public class Scan_PHP_CGI_RCE {
     public String payloadx = "/?-s";
     public String signaturex = "<?php";
 
-    public boolean PHP_CGI_RCE(UrlOb ob, String cookie) {
+    public boolean Scan(UrlOb ob, String cookie) {
         try {
             if (ob.getParam() != null) {
                 String html = GetHtmlString(ob, cookie);

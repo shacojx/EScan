@@ -1,14 +1,18 @@
 PayloadSignature\A5SecurityMisconfiguration\Backup_And_Unreferenced_Files.class
 View\EScan$1.class
 Scan\A3Injection\Scan_IFrameinjection.class
+View\EScan$8.class
 PayloadSignature\A6VulnerableandOutdatedComponents\PHP_Eval.class
 Scan\A5SecurityMisconfiguration\Scan_Backup_And_Unreferenced_File.class
 PayloadSignature\A3Injection\LDAPInjection.class
 Scan\A7IdentificationAndAuthenticationFailures\Scan_Insecure_Login_Forms.class
+View\EScan$10.class
 Scan\A3Injection\Scan_SSIinjection.class
 Scan\A3Injection\Scan_CMDinjection.class
+View\EScan$5.class
 PayloadSignature\A3Injection\SQLInjectionBlind.class
 PayloadSignature\A2CryptographicFailures\Text_File.class
+View\EScan$7.class
 PayloadSignature\A4InsecureDesign\sensitive_file.class
 PayloadSignature\A1BrokenAccessControl\Restrict_Folder_Access_sig.class
 FunctionPlus\HttpCommon.class
@@ -17,7 +21,9 @@ PayloadSignature\A7IdentificationandAuthenticationFailures\administrative_Portal
 Entity\robot_file_module.class
 Scan\A1BrokenAccessControl\Scan_Restrict_Folder_Access.class
 Scan\A6VulnerableandOutdatedComponents\Scan_PHP_CGI_RCE.class
+FunctionPlus\ScanVuln.class
 PayloadSignature\A3Injection\SQLInjection.class
+View\EScan$4.class
 Scan\A7IdentificationAndAuthenticationFailures\Scan_Session_ID_in_URL.class
 Scan\A2CryptographicFailures\Scan_Text_Files_Accounts.class
 InformationGathering\InfoGathering.class
@@ -27,6 +33,7 @@ PayloadSignature\A3Injection\iFrameInjection.class
 Entity\UrlOb.class
 PayloadSignature\A1BrokenAccessControl\LFI.class
 PayloadSignature\A3Injection\XMLXPathInjection.class
+View\EScan$6.class
 Spider\Test.class
 PayloadSignature\A7IdentificationandAuthenticationFailures\Session_ID_in_URL.class
 PayloadSignature\A3Injection\PHPCodeInjection.class
@@ -34,6 +41,7 @@ Entity\tree.class
 Scan\A2CryptographicFailures\Scan_Clear_Text_HTTP.class
 PayloadSignature\A8SoftwareandDataIntegrityFailures\Insecure_Deserialization.class
 Spider\Method.class
+View\EScan$3.class
 Scan\A5SecurityMisconfiguration\Scan_Cross_Site_Tracing.class
 PayloadSignature\A3Injection\OSCommandInjection.class
 Scan\A4InsecureDesign\Scan_sensitive_file.class
@@ -55,3 +63,4 @@ Scan\A1BrokenAccessControl\Scan_Directory_Traversal_Files.class
 Scan\A2CryptographicFailures\Scan_Base64EncodeSecret.class
 Spider\login.class
 Scan\A6VulnerableandOutdatedComponents\Scan_PHP_Eval_Function.class
+View\EScan$9.class

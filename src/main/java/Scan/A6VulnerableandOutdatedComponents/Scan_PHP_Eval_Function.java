@@ -23,7 +23,7 @@ public class Scan_PHP_Eval_Function {
     public String paramx;
     public String payloadx;
     public String signaturex;
-    public boolean PHP_Eval_Funtion(UrlOb urlOB, String cookie) {
+    public boolean Scan(UrlOb urlOB, String cookie) {
         try {
             if(urlOB.getParam() != null){
                 PHP_Eval php = new PHP_Eval();

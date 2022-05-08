@@ -23,7 +23,7 @@ public class Scan_Directory_Traversal_Files {
     public String paramx;
     public String payloadx;
     public String signaturex;
-    public boolean Get_request_URL(UrlOb ob, String cookies) {
+    public boolean Scan(UrlOb ob, String cookies) {
         try {
             String param = ob.getParam();
             if (param != null) {

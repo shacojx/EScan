@@ -8,11 +8,10 @@ package Spider;
  *
  * @author shacojx
  */
-
 import Entity.UrlOb;
 import FunctionPlus.HttpCommon;
+import View.EScan;
 import okhttp3.*;
-
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -23,50 +22,65 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SpiderWeb {
+
     private List<UrlOb> ListAllUrl = new ArrayList<>();
     public String cookie_web = "";
 
     public List<UrlOb> SpiderWeb(String web, String cookie, String User, String Pass, String linkLogin, String username) {
-try{
-    List<String> Listpaths = new ArrayList<String>();
-    //get html web
-    String html = GetHtmlString(web, cookie);
-    //check login
-    login login = new login();
-    UrlOb Ob = new UrlOb(web, "GET", null, 0, false,0, cookie,username);
-    ListAllUrl.add(Ob);
-    if (web != null && cookie == null && linkLogin == null && User == null && Pass == null) {
-        System.out.println("==== start job 1 ====");
-        //get url
-        spider(cookie, 15, web, username);
-    } else if (web != null && cookie != null && linkLogin == null && User == null && Pass == null) {
-        System.out.println("==== Start job 2 =====");
-        //get url
-        spider(cookie, 15, web, username);
-    } else if (web != null && cookie == null && linkLogin != null && User != null && Pass != null) {
-        System.out.println("==== Start job 3 =====");
-        cookie = login.getCookie(linkLogin, User, Pass);
-        cookie_web = cookie;
-        //get url
-        spider(cookie, 15, web, username);
-    } else {
-        System.out.println("==== Error input =====");
-    }
+        try {
+            List<String> Listpaths = new ArrayList<String>();
+            //get html web
+            String html = GetHtmlString(web, cookie);
+            //check login
+            login login = new login();
+            UrlOb Ob = new UrlOb(web, "GET", null, 0, false, 0, cookie, username);
+            ListAllUrl.add(Ob);
+            if (web != null && cookie == null && linkLogin == null && User == null && Pass == null) {
+                System.out.println("==== start job 1 ====");
+                String datalog = "(Start)[Spider]";
+                EScan.GhiLog(datalog);
+                //get url
+                spider(cookie, 15, web, username);
+            } else if (web != null && cookie != null && linkLogin == null && User == null && Pass == null) {
+                System.out.println("==== Start job 2 =====");
+                String datalog = "(Start)[Spider]";
+                EScan.GhiLog(datalog);
+                //get url
+                spider(cookie, 15, web, username);
+            } else if (web != null && cookie == null && linkLogin != null && User != null && Pass != null) {
+                System.out.println("==== Start job 3 =====");
+                String datalog = "(Start)[Spider]";
+                EScan.GhiLog(datalog);
+                cookie = login.getCookie(linkLogin, User, Pass);
+                cookie_web = cookie;
+                //get url
+                spider(cookie, 15, web, username);
+            } else {
+                System.out.println("==== Error input =====");
+                String datalog = "==> Error Spider <==";
+                EScan.GhiLog(datalog);
+            }
 
-
-    return ListAllUrl;
-}catch (Exception e){
-    System.out.println("loi spider ne");
-}
+            return ListAllUrl;
+        } catch (Exception e) {
+            System.out.println("loi spider ne");
+            String datalog = "==> Error Spider <==";
+            EScan.GhiLog(datalog);
+        }
         return ListAllUrl;
-
 
     }
 
     private void spider(String cookie, int depth, String web, String username) {
-        try{
+
+        try {
             List<String> a = new ArrayList<>();
             for (int i = 0; i < depth; i++) {
+                if (EScan.isStop == true) {
+                    String datalog = "==> STOP SCAN <==";
+                    EScan.GhiLog(datalog);
+                    return;
+                }
                 int size = ListAllUrl.size();
                 for (int j = 0; j < size; j++) {
                     UrlOb Ob = (UrlOb) ListAllUrl.get(j);
@@ -78,16 +92,20 @@ try{
 
             }
             System.out.println("===========size " + ListAllUrl.size() + "=================");
+            String datalog = "[Spider](Total url)" + ListAllUrl.size() + "\n(Done)[Spider]";
+            EScan.GhiLog(datalog);
 
-            System.out.println("================show result ===================");
-        }catch (Exception e){
+            System.out.println("(Done)[Spider]");
+
+        } catch (Exception e) {
             System.out.println("loi spider ne");
+            String datalog = "==> Error Spider <==";
+            EScan.GhiLog(datalog);
         }
-
 
     }
 
-    private void getObjectByUrl(UrlOb Ob, String cookie, String web, String username)  {
+    private void getObjectByUrl(UrlOb Ob, String cookie, String web, String username) {
         try {
             String url = "";
             String method = "";
@@ -104,11 +122,11 @@ try{
                 List<String> ListUrl = getHref(html);
                 URI linkBase = new URI(Ob.getUrl());
                 for (String urlNotVerify : ListUrl) {
-                    urlNotVerify =urlNotVerify.replaceAll (" ", "+");
+                    urlNotVerify = urlNotVerify.replaceAll(" ", "+");
                     URI linkHight2 = new URI(Ob.getUrl());
-                    try{
+                    try {
                         linkHight2 = new URI(urlNotVerify);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         linkHight2 = new URI(Ob.getUrl());
                     }
                     url = String.valueOf(linkBase.resolve(linkHight2)).split("\\?")[0];
@@ -119,10 +137,12 @@ try{
                         param = null;
                     }
 
-                    UrlOb UrlObject = new UrlOb(url, method, param, depth, false,0, cookie, username);
+                    UrlOb UrlObject = new UrlOb(url, method, param, depth, false, 0, cookie, username);
                     if (CheckObject(UrlObject, web) && CheckDup(UrlObject, web)) {
                         ListAllUrl.add(UrlObject);
-                        System.out.println("-> "+UrlObject.getUrl());
+                        System.out.println("-> " + UrlObject.getUrl());
+                        String datalog = "-> " + UrlObject.getUrl();
+                        EScan.GhiLog(datalog);
                     }
                     //add post method form
                     List<String> ListForm = GetForm(html);
@@ -131,18 +151,21 @@ try{
                         method = GetMethodInForm(form);
                         linkHight2 = new URI(GetActionInForm(form));
                         url = String.valueOf(linkBase.resolve(linkHight2)).split("\\?")[0];
-                        UrlObject = new UrlOb(url, method, param, depth, false,0, cookie, username);
+                        UrlObject = new UrlOb(url, method, param, depth, false, 0, cookie, username);
                         if (CheckObject(UrlObject, web) && CheckDup(UrlObject, web)) {
                             ListAllUrl.add(UrlObject);
-                            System.out.println("-> "+UrlObject.getUrl());
+                            System.out.println("-> " + UrlObject.getUrl());
+                            String datalog = "-> " + UrlObject.getUrl();
+                            EScan.GhiLog(datalog);
                         }
                     }
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("loi spider ne");
+           String datalog = "==> Error Spider <==";
+            EScan.GhiLog(datalog);
         }
-
 
     }
 
@@ -163,9 +186,10 @@ try{
         String param = Ob.getParam();
         for (int i = 0; i < ListAllUrl.size(); i++) {
             UrlOb xUrl = (UrlOb) ListAllUrl.get(i);
-            if(xUrl.getUrl().equals(url)){
-                if(analysisParam(xUrl.getParam()).equals(analysisParam(param)))
+            if (xUrl.getUrl().equals(url)) {
+                if (analysisParam(xUrl.getParam()).equals(analysisParam(param))) {
                     return false;
+                }
 
             }
         }
@@ -173,7 +197,7 @@ try{
     }
 
     public String analysisParam(String param) {
-        if(param!=null){
+        if (param != null) {
             String fomatparam = "";
             String folder = "";
             List<String> ListParam = new ArrayList<String>();
@@ -204,21 +228,20 @@ try{
                 }
             }
             return fomatparam;
-        }
-        else
+        } else {
             return "";
+        }
     }
 
     private boolean checkFile(String param) {
-        if (param.toLowerCase(Locale.ROOT).contains(".jpg")
-                || param.toLowerCase(Locale.ROOT).contains(".png")
-                || param.toLowerCase(Locale.ROOT).contains(".js")
-                || param.toLowerCase(Locale.ROOT).contains(".doc")
-                || param.toLowerCase(Locale.ROOT).contains(".xml")
-                || param.toLowerCase(Locale.ROOT).contains(".gif")
-                || param.toLowerCase(Locale.ROOT).contains(".json")
-                || param.toLowerCase(Locale.ROOT).contains(".css")
-        ) {
+        if (param.toLowerCase().contains(".jpg")
+                || param.toLowerCase().contains(".png")
+                || param.toLowerCase().contains(".js")
+                || param.toLowerCase().contains(".doc")
+                || param.toLowerCase().contains(".xml")
+                || param.toLowerCase().contains(".gif")
+                || param.toLowerCase().contains(".json")
+                || param.toLowerCase().contains(".css")) {
             return true;
         } else {
             return false;
@@ -227,11 +250,11 @@ try{
 
     private String GetHtmlString(String url, String cookie) {
         String html = "";
-        try{
+        try {
 
             if (cookie != null) {
                 OkHttpClient client = HttpCommon.getInstance().getHttpClient().newBuilder()
-                                    .build();
+                        .build();
                 Request request = new Request.Builder()
                         .url((String) url)
                         .method("GET", null)
@@ -245,12 +268,14 @@ try{
                         conn = false;
                     } catch (SocketTimeoutException e) {
                         System.out.println("connecting ....");
+                        String datalog = "connecting ....";
+                        EScan.GhiLog(datalog);
                     }
                 }
                 html = response.body().string();
             } else {
                 OkHttpClient client = HttpCommon.getInstance().getHttpClient().newBuilder()
-                                    .build();
+                        .build();
                 Request request = new Request.Builder()
                         .url((String) url)
                         .method("GET", null)
@@ -259,10 +284,11 @@ try{
                 html = response.body().string();
             }
 
-
             return html;
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("loi spide ne");
+           String datalog = "==> Error Spider <==";
+            EScan.GhiLog(datalog);
         }
         return html;
 
@@ -309,8 +335,8 @@ try{
         try {
             if (cookie != null) {
                 OkHttpClient client = HttpCommon.getInstance().getHttpClient().newBuilder()
-                                    .followRedirects(false).build();
-                
+                        .followRedirects(false).build();
+
                 MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
                 RequestBody body = RequestBody.create(mediaType, param);
                 Request request = new Request.Builder()
@@ -322,7 +348,7 @@ try{
                 content = response.body().string();
             } else {
                 OkHttpClient client = HttpCommon.getInstance().getHttpClient().newBuilder()
-                                    .followRedirects(false).build();
+                        .followRedirects(false).build();
                 MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
                 RequestBody body = RequestBody.create(mediaType, param);
                 Request request = new Request.Builder()
@@ -334,8 +360,10 @@ try{
 
             }
             return content;
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Loi spider ne");
+            String datalog = "==> Error Spider <==";
+            EScan.GhiLog(datalog);
         }
         return content;
 
@@ -362,11 +390,10 @@ try{
             while (valueTag.find()) {
                 value = valueTag.group(1);
             }
-            if (name!="" && value == "" ) {
+            if (name != "" && value == "") {
                 value = "a";
                 ListParam.add(name + "=" + value);
-            }
-            else if(name!="" && value != ""){
+            } else if (name != "" && value != "") {
                 ListParam.add(name + "=" + value);
             }
         }
@@ -407,13 +434,13 @@ try{
     }
 
     private boolean CheckLogOutKeyWord(String url) {
-        if (url.toLowerCase(Locale.ROOT).contains("sigout")
-                || url.toLowerCase(Locale.ROOT).contains("logout")
-                || url.toLowerCase(Locale.ROOT).contains("dangxuat")
-                || url.toLowerCase(Locale.ROOT).contains("thoat")
-                || url.toLowerCase(Locale.ROOT).contains("sing-out")
-                || url.toLowerCase(Locale.ROOT).contains("log-out")
-                || url.toLowerCase(Locale.ROOT).contains("dang-xuat")) {
+        if (url.toLowerCase().contains("sigout")
+                || url.toLowerCase().contains("logout")
+                || url.toLowerCase().contains("dangxuat")
+                || url.toLowerCase().contains("thoat")
+                || url.toLowerCase().contains("sing-out")
+                || url.toLowerCase().contains("log-out")
+                || url.toLowerCase().contains("dang-xuat")) {
             return true;
         } else {
             return false;
@@ -422,7 +449,7 @@ try{
 
     public List<String> getHref(String html) {
         List listUrl = new ArrayList();
-        try{
+        try {
 
             Pattern p = Pattern.compile("href=[\\\"\\\']([^\\\"\\\']*)[\\\"\\\']");
             Pattern p2 = Pattern.compile("src=[\\\"\\\']([^\\\"\\\']*)[\\\"\\\']");
@@ -438,8 +465,9 @@ try{
                 url = url.replaceAll("\"", "");
                 url = url.replaceAll("\'", "");
                 url = url.trim();
-                if (!url.contains("javascript"))
+                if (!url.contains("javascript")) {
                     listUrl.add(url);
+                }
             }
             while (m2.find()) {
                 url = m2.group(1); // this variable should contain the link URL
@@ -453,14 +481,13 @@ try{
                 listUrl.add(url);
             }
             return listUrl;
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("loi spider ne");
+            String datalog = "==> Error Spider <==";
+            EScan.GhiLog(datalog);
         }
         return listUrl;
 
     }
 
-
 }
-
-

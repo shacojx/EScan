@@ -20,7 +20,7 @@ public class Scan_sensitive_file {
     public String payloadx;
     public String signaturex;
 
-    public boolean sensitive_file(String domain) {
+    public boolean Scan(String domain) {
         try {
             domain = domain.replaceAll("http://", "");
             domain = domain.replaceAll("https://", "");

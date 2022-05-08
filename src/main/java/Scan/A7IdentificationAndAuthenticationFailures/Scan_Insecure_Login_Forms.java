@@ -30,7 +30,7 @@ public class Scan_Insecure_Login_Forms {
     public String payloadx = "";
     public String signaturex = "";
 
-    public boolean Insecure_Login_Forms(UrlOb ob, String cookie) {
+    public boolean Scan(UrlOb ob, String cookie) {
         try {
             String url = ob.getUrl();
             Map<String, String> ListFomr = new HashMap<String, String>();
