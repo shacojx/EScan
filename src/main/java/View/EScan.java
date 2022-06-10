@@ -232,13 +232,13 @@ public class EScan extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "URL", "Vuln", "Risk", "Reference"
+                "URL", "Vuln", "Risk", "Reference", "Payload", "Signature"
             }
         ));
         jScrollPane2.setViewportView(jTable1);
@@ -295,10 +295,10 @@ public class EScan extends javax.swing.JFrame {
         this.target.setText("");
     }//GEN-LAST:event_targetMouseClicked
     
-    public static void addRowData(String url, String vul, String risk, String ref) {        
+    public static void addRowData(String url, String vul, String risk, String ref, String payload, String signature) {        
         new Thread(() -> {
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.addRow(new Object[]{url, vul, risk, ref});
+            model.addRow(new Object[]{url, vul, risk, ref, payload, signature});
         }).start();
         
     }

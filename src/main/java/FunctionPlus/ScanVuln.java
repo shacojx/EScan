@@ -94,7 +94,7 @@ public class ScanVuln {
         if (check_txt_acc == true) {
             String datalog = "[Vuln] Leak Text File Account";
             EScan.GhiLog(datalog);
-            EScan.addRowData(url, "Leak Text File Account", "Critical", scan_txt_acc.payloadx);
+            EScan.addRowData(url, "Leak Text File Account", "Critical", scan_txt_acc.payloadx, scan_txt_acc.payloadx,scan_txt_acc.signaturex);
         } else {
             String datalog = "[Scanning] " + url + " NOT Leak Text File Account";
             EScan.GhiLog(datalog);
@@ -104,7 +104,7 @@ public class ScanVuln {
         if (check_sen == true) {
             String datalog = "[Vuln] Sensitive File";
             EScan.GhiLog(datalog);
-            EScan.addRowData(url, "Sensitive File", "Medium", scan_sen.payloadx);
+            EScan.addRowData(url, "Sensitive File", "Medium", scan_sen.payloadx, scan_sen.payloadx, scan_sen.signaturex);
         } else {
             String datalog = "[Scanning] " + url + " NOT Sensitive File";
             EScan.GhiLog(datalog);
@@ -115,7 +115,7 @@ public class ScanVuln {
         if (check_bak == true) {
             String datalog = "[Vuln] Backup And Unreferenced File";
             EScan.GhiLog(datalog);
-            EScan.addRowData(url, "Backup And Unreferenced File", "Critical", scan_sen.payloadx);
+            EScan.addRowData(url, "Backup And Unreferenced File", "Critical", scan_bak.payloadx, scan_bak.payloadx, scan_bak.signaturex);
         } else {
             String datalog = "[Scanning] " + url + " NOT Backup And Unreferenced File";
             EScan.GhiLog(datalog);
@@ -135,8 +135,8 @@ public class ScanVuln {
             if (check_lfi == true) {
                 String datalog = "[Vuln] LFI: " + o.getUrl();
                 EScan.GhiLog(datalog);
-                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "Directory Traversal", "Critical", "https://portswigger.net/web-security/file-path-traversal");
-                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "LFI", "Critical", "https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/07-Input_Validation_Testing/11.1-Testing_for_Local_File_Inclusion");
+                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "Directory Traversal", "Critical", "https://portswigger.net/web-security/file-path-traversal", scan_dir_lfi.payloadx, scan_dir_lfi.signaturex);
+                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "LFI", "Critical", "https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/07-Input_Validation_Testing/11.1-Testing_for_Local_File_Inclusion",scan_dir_lfi.payloadx, scan_dir_lfi.signaturex);
             } else {
                 String datalog = "[Scanning] " + o.getUrl() + " NOT LFI";
                 EScan.GhiLog(datalog);
@@ -146,7 +146,7 @@ public class ScanVuln {
             if (check_host == true) {
                 String datalog = "[Vuln] Host Header Attack: " + o.getUrl();
                 EScan.GhiLog(datalog);
-                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "Host Header Attack", "Medium", "https://portswigger.net/web-security/host-header");
+                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "Host Header Attack", "Medium", "https://portswigger.net/web-security/host-header", scan_host.payloadx, scan_host.signaturex);
             } else {
                 String datalog = "[Scanning] " + o.getUrl() + " NOT Host Header Attack";
                 EScan.GhiLog(datalog);
@@ -158,7 +158,7 @@ public class ScanVuln {
             if (check_base64 == true) {
                 String datalog = "[Vuln] Base64 Encode Secret: " + o.getUrl();
                 EScan.GhiLog(datalog);
-                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "Base64 Encode Secret", "Critical", "https://www.tenable.com/blog/detecting-base64-encoded-authentication-requests");
+                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "Base64 Encode Secret", "Critical", "https://www.tenable.com/blog/detecting-base64-encoded-authentication-requests", scan_base64.payloadx, scan_base64.signaturex);
             } else {
                 String datalog = "[Scanning] " + o.getUrl() + " NOT Host Header Attack";
                 EScan.GhiLog(datalog);
@@ -168,7 +168,7 @@ public class ScanVuln {
             if (check_base64 == true) {
                 String datalog = "[Vuln] Clear Text HTTP: " + o.getUrl();
                 EScan.GhiLog(datalog);
-                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "Clear Text HTTP", "Medium", "https://portswigger.net/kb/issues/00300100_cleartext-submission-of-password");
+                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "Clear Text HTTP", "Medium", "https://portswigger.net/kb/issues/00300100_cleartext-submission-of-password", scan_http.payloadx, scan_http.signaturex);
             } else {
                 String datalog = "[Scanning] " + o.getUrl() + " NOT Clear Text HTTP";
                 EScan.GhiLog(datalog);
@@ -180,7 +180,7 @@ public class ScanVuln {
             if (check_cmd == true) {
                 String datalog = "[Vuln] OS CMD Injection: " + o.getUrl();
                 EScan.GhiLog(datalog);
-                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "CMD Injection", "Critical", "https://owasp.org/www-community/attacks/Command_Injection");
+                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "CMD Injection", "Critical", "https://owasp.org/www-community/attacks/Command_Injection", scan_CMD.payloadx, scan_CMD.signaturex);
             } else {
                 String datalog = "[Scanning] " + o.getUrl() + " NOT CMD Injection";
                 EScan.GhiLog(datalog);
@@ -190,7 +190,7 @@ public class ScanVuln {
             if (check_html == true) {
                 String datalog = "[Vuln] HTML Injection: " + o.getUrl();
                 EScan.GhiLog(datalog);
-                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "HTML Injection", "Low", "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/11-Client-side_Testing/03-Testing_for_HTML_Injection");
+                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "HTML Injection", "Low", "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/11-Client-side_Testing/03-Testing_for_HTML_Injection", scan_html.payloadx, scan_html.signaturex);
 
             } else {
                 String datalog = "[Scanning] " + o.getUrl() + " NOT HTML Injection";
@@ -201,7 +201,7 @@ public class ScanVuln {
             if (check_ifame == true) {
                 String datalog = "[Vuln] IFrame Injection: " + o.getUrl();
                 EScan.GhiLog(datalog);
-                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "IFrame Injection", "High", "https://www.invicti.com/blog/web-security/frame-injection-attacks/");
+                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "IFrame Injection", "High", "https://www.invicti.com/blog/web-security/frame-injection-attacks/", scan_ifram.payloadx, scan_ifram.signaturex);
             } else {
                 String datalog = "[Scanning] " + o.getUrl() + " NOT IFrame Injection";
                 EScan.GhiLog(datalog);
@@ -211,7 +211,7 @@ public class ScanVuln {
             if (check_php == true) {
                 String datalog = "[Vuln] PHP Injection: " + o.getUrl();
                 EScan.GhiLog(datalog);
-                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "PHP Injection", "Critical", "https://owasp.org/www-community/vulnerabilities/PHP_Object_Injection");
+                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "PHP Injection", "Critical", "https://owasp.org/www-community/vulnerabilities/PHP_Object_Injection", scan_php.payloadx, scan_php.signaturex);
             } else {
                 String datalog = "[Scanning] " + o.getUrl() + " NOT PHP Injection";
                 EScan.GhiLog(datalog);
@@ -221,7 +221,7 @@ public class ScanVuln {
             if (check_sql == true) {
                 String datalog = "[Vuln] SQL Injection: " + o.getUrl();
                 EScan.GhiLog(datalog);
-                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "SQL Injection", "Critical", "https://owasp.org/www-community/attacks/SQL_Injection");
+                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "SQL Injection", "Critical", "https://owasp.org/www-community/attacks/SQL_Injection", scan_Sql.payloadx, scan_Sql.signaturex);
             } else {
                 String datalog = "[Scanning] " + o.getUrl() + " NOT SQL Injection";
                 EScan.GhiLog(datalog);
@@ -231,7 +231,7 @@ public class ScanVuln {
             if (check_ssi == true) {
                 String datalog = "[Vuln] SSI Injection: " + o.getUrl();
                 EScan.GhiLog(datalog);
-                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "SSI Injection", "Critical", "https://owasp.org/www-community/attacks/Server-Side_Includes_(SSI)_Injection");
+                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "SSI Injection", "Critical", "https://owasp.org/www-community/attacks/Server-Side_Includes_(SSI)_Injection", scan_ssi.payloadx, scan_ssi.signaturex);
             } else {
                 String datalog = "[Scanning] " + o.getUrl() + " NOT SSI Injection";
                 EScan.GhiLog(datalog);
@@ -241,7 +241,7 @@ public class ScanVuln {
             if (check_xss == true) {
                 String datalog = "[Vuln] XSS: " + o.getUrl();
                 EScan.GhiLog(datalog);
-                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "XSS", "High", "https://owasp.org/www-community/attacks/xss/");
+                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "XSS", "High", "https://owasp.org/www-community/attacks/xss/", scan_xss.payloadx, scan_xss.signaturex);
             } else {
                 String datalog = "[Scanning] " + o.getUrl() + " NOT XSS";
                 EScan.GhiLog(datalog);
@@ -251,7 +251,7 @@ public class ScanVuln {
             if (check_xml == true) {
                 String datalog = "[Vuln] XML Injection: " + o.getUrl();
                 EScan.GhiLog(datalog);
-                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "XML Injection", "Critical", "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/07-Testing_for_XML_Injection");
+                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "XML Injection", "Critical", "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/07-Testing_for_XML_Injection", scan_xml.payloadx, scan_xml.signaturex);
             } else {
                 String datalog = "[Scanning] " + o.getUrl() + " NOT XML Injection";
                 EScan.GhiLog(datalog);
@@ -263,7 +263,7 @@ public class ScanVuln {
             if (check_track == true) {
                 String datalog = "[Vuln] Cross Site Tracing: " + o.getUrl();
                 EScan.GhiLog(datalog);
-                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "Cross Site Tracing", "Medium", "https://owasp.org/www-community/attacks/Cross_Site_Tracing");
+                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "Cross Site Tracing", "Medium", "https://owasp.org/www-community/attacks/Cross_Site_Tracing", scan_track.payloadx, scan_track.signaturex);
             } else {
                 String datalog = "[Scanning] " + o.getUrl() + " NOT Cross Site Tracing";
                 EScan.GhiLog(datalog);
@@ -275,7 +275,7 @@ public class ScanVuln {
             if (check_track == true) {
                 String datalog = "[Vuln] PHP CGI RCE: " + o.getUrl();
                 EScan.GhiLog(datalog);
-                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "PHP CGI RCE", "Critical", "https://www.acunetix.com/vulnerabilities/web/php-cgi-remote-code-execution/");
+                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "PHP CGI RCE", "Critical", "https://www.acunetix.com/vulnerabilities/web/php-cgi-remote-code-execution/", scan_php_rce.payloadx, scan_php_rce.signaturex);
             } else {
                 String datalog = "[Scanning] " + o.getUrl() + " NOT PHP CGI RCE";
                 EScan.GhiLog(datalog);
@@ -286,7 +286,7 @@ public class ScanVuln {
             if (check_php_eval == true) {
                 String datalog = "[Vuln] PHP Eval Function: " + o.getUrl();
                 EScan.GhiLog(datalog);
-                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "PHP Eval Function", "Critical", "https://owasp.org/www-community/attacks/Direct_Dynamic_Code_Evaluation_Eval%20Injection");
+                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "PHP Eval Function", "Critical", "https://owasp.org/www-community/attacks/Direct_Dynamic_Code_Evaluation_Eval%20Injection", scan_php_eval.payloadx, scan_php_eval.signaturex);
             } else {
                 String datalog = "[Scanning] " + o.getUrl() + " NOT PHP Eval Function";
                 EScan.GhiLog(datalog);
@@ -298,7 +298,7 @@ public class ScanVuln {
             if (check_admin == true) {
                 String datalog = "[Vuln] Administrative Portals: " + o.getUrl();
                 EScan.GhiLog(datalog);
-                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "Administrative Portals", "Low", "");
+                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "Administrative Portals", "Low", "", scan_admin.payloadx, scan_admin.signaturex);
             } else {
                 String datalog = "[Scanning] " + o.getUrl() + " NOT Administrative Portals";
                 EScan.GhiLog(datalog);
@@ -309,7 +309,7 @@ public class ScanVuln {
             if (check_login_form == true) {
                 String datalog = "[Vuln] Insecure Login Forms: " + o.getUrl();
                 EScan.GhiLog(datalog);
-                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "Insecure Login Forms", "Low", "");
+                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "Insecure Login Forms", "Low", "", scan_inse_login.payloadx, scan_inse_login.signaturex);
             } else {
                 String datalog = "[Scanning] " + o.getUrl() + " NOT Insecure Login Forms";
                 EScan.GhiLog(datalog);
@@ -320,7 +320,7 @@ public class ScanVuln {
             if (check_ss == true) {
                 String datalog = "[Vuln] SessionID In URL: " + o.getUrl();
                 EScan.GhiLog(datalog);
-                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "SessionID In URL", "Medium", "");
+                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "SessionID In URL", "Medium", "", scan_ss.payloadx, scan_ss.signaturex);
             } else {
                 String datalog = "[Scanning] " + o.getUrl() + " NOT SessionID In URL";
                 EScan.GhiLog(datalog);
@@ -332,7 +332,7 @@ public class ScanVuln {
             if (check_in_des == true) {
                 String datalog = "[Vuln] Insecure Deserialization: " + o.getUrl();
                 EScan.GhiLog(datalog);
-                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "Insecure Deserialization", "Medium", "https://owasp.org/www-project-top-ten/2017/A8_2017-Insecure_Deserialization");
+                EScan.addRowData(o.getUrl() + "?" + o.getParam(), "Insecure Deserialization", "Medium", "https://owasp.org/www-project-top-ten/2017/A8_2017-Insecure_Deserialization", scan_in_des.payloadx, scan_in_des.signaturex);
             } else {
                 String datalog = "[Scanning] " + o.getUrl() + " NOT Insecure Deserialization";
                 EScan.GhiLog(datalog);
