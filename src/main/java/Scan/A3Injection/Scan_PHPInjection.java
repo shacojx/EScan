@@ -63,7 +63,7 @@ public class Scan_PHPInjection {
                                     break;
                                 }
                             }
-                            if (check = true) {
+                            if (check == true) {
                                 break;
                             }
                         }
@@ -97,7 +97,7 @@ public class Scan_PHPInjection {
                                     break;
                                 }
                             }
-                            if (check = true) {
+                            if (check == true) {
                                 break;
                             }
                         }
@@ -135,7 +135,7 @@ public class Scan_PHPInjection {
                                     break;
                                 }
                             }
-                            if (check = true) {
+                            if (check == true) {
                                 break;
                             }
                         }
@@ -170,7 +170,7 @@ public class Scan_PHPInjection {
                                     break;
                                 }
                             }
-                            if (check = true) {
+                            if (check == true) {
                                 break;
                             }
                         }

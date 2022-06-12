@@ -25,6 +25,7 @@ public class SpiderWeb {
 
     private List<UrlOb> ListAllUrl = new ArrayList<>();
     public String cookie_web = "";
+    private int numberUrlLimit = 10000;
 
     public List<UrlOb> SpiderWeb(String web, String cookie, String User, String Pass, String linkLogin, String username) {
         try {
@@ -83,10 +84,12 @@ public class SpiderWeb {
                 }
                 int size = ListAllUrl.size();
                 for (int j = 0; j < size; j++) {
-                    UrlOb Ob = (UrlOb) ListAllUrl.get(j);
-                    if (Ob.isScan() == false) {
-                        getObjectByUrl(Ob, cookie, web, username);
-                        Ob.setScan(true);
+                    if (ListAllUrl.size() < numberUrlLimit) {
+                        UrlOb Ob = (UrlOb) ListAllUrl.get(j);
+                        if (Ob.isScan() == false) {
+                            getObjectByUrl(Ob, cookie, web, username);
+                            Ob.setScan(true);
+                        }
                     }
                 }
 
@@ -138,11 +141,13 @@ public class SpiderWeb {
                     }
 
                     UrlOb UrlObject = new UrlOb(url, method, param, depth, false, 0, cookie, username);
-                    if (CheckObject(UrlObject, web) && CheckDup(UrlObject, web)) {
-                        ListAllUrl.add(UrlObject);
-                        System.out.println("-> " + UrlObject.getUrl());
-                        String datalog = "-> " + UrlObject.getUrl();
-                        EScan.GhiLog(datalog);
+                    if (CheckObject(UrlObject, web) && CheckDup(UrlObject, web) && checkUrlDetect(UrlObject)) {
+                        if (ListAllUrl.size() < numberUrlLimit) {
+                            ListAllUrl.add(UrlObject);
+                            System.out.println("-> " + UrlObject.getUrl());
+                            String datalog = "-> " + UrlObject.getUrl();
+                            EScan.GhiLog(datalog);
+                        }
                     }
                     //add post method form
                     List<String> ListForm = GetForm(html);
@@ -152,18 +157,20 @@ public class SpiderWeb {
                         linkHight2 = new URI(GetActionInForm(form));
                         url = String.valueOf(linkBase.resolve(linkHight2)).split("\\?")[0];
                         UrlObject = new UrlOb(url, method, param, depth, false, 0, cookie, username);
-                        if (CheckObject(UrlObject, web) && CheckDup(UrlObject, web)) {
-                            ListAllUrl.add(UrlObject);
-                            System.out.println("-> " + UrlObject.getUrl());
-                            String datalog = "-> " + UrlObject.getUrl();
-                            EScan.GhiLog(datalog);
+                        if (CheckObject(UrlObject, web) && CheckDup(UrlObject, web) && checkUrlDetect(UrlObject)) {
+                            if (ListAllUrl.size() < numberUrlLimit) {
+                                ListAllUrl.add(UrlObject);
+                                System.out.println("-> " + UrlObject.getUrl());
+                                String datalog = "-> " + UrlObject.getUrl();
+                                EScan.GhiLog(datalog);
+                            }
                         }
                     }
                 }
             }
         } catch (Exception e) {
             System.out.println("loi spider ne");
-           String datalog = "==> Error Spider <==";
+            String datalog = "==> Error Spider <==";
             EScan.GhiLog(datalog);
         }
 
@@ -233,6 +240,30 @@ public class SpiderWeb {
         }
     }
 
+    private boolean checkUrlDetect(UrlOb ob) {
+        String url = ob.getUrl();
+        if (url.contains(".js")
+                || url.contains(".png")
+                || url.contains(".jpg")
+                || url.contains(".gif")
+                || url.contains(".css")
+                || url.contains(".bak")
+                || url.contains(".zip")
+                || url.contains(".rar")
+                || url.contains(".json")
+                || url.contains(".doc")
+                || url.contains(".ts")
+                || url.contains(".mp4")
+                || url.contains(".mp3")
+                || url.contains(".bak")
+                || url.contains(".dump")
+                || url.contains(".txt")) {
+            return false;
+        }
+
+        return true;
+    }
+
     private boolean checkFile(String param) {
         if (param.toLowerCase().contains(".jpg")
                 || param.toLowerCase().contains(".png")
@@ -287,7 +318,7 @@ public class SpiderWeb {
             return html;
         } catch (Exception e) {
             System.out.println("loi spide ne");
-           String datalog = "==> Error Spider <==";
+            String datalog = "==> Error Spider <==";
             EScan.GhiLog(datalog);
         }
         return html;

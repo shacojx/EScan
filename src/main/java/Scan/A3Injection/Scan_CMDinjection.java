@@ -63,7 +63,7 @@ public class Scan_CMDinjection {
                                     break;
                                 }
                             }
-                            if (check = true) {
+                            if (check == true) {
                                 break;
                             }
                         }
@@ -95,7 +95,7 @@ public class Scan_CMDinjection {
                                     break;
                                 }
                             }
-                            if (check = true) {
+                            if (check == true) {
                                 break;
                             }
                         }
@@ -131,7 +131,7 @@ public class Scan_CMDinjection {
                                     break;
                                 }
                             }
-                            if (check = true) {
+                            if (check == true) {
                                 break;
                             }
                         }
@@ -164,7 +164,7 @@ public class Scan_CMDinjection {
                                     break;
                                 }
                             }
-                            if (check = true) {
+                            if (check == true) {
                                 break;
                             }
                         }

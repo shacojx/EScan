@@ -65,7 +65,7 @@ public class Scan_XSS {
                                 break;
                             }
 
-                            if (check = true) {
+                            if (check == true) {
                                 break;
                             }
                         }
@@ -96,7 +96,7 @@ public class Scan_XSS {
                                 check = true;
                                 break;
                             }
-                            if (check = true) {
+                            if (check == true) {
                                 break;
                             }
                         }
@@ -131,7 +131,7 @@ public class Scan_XSS {
                                 check = true;
                                 break;
                             }
-                            if (check = true) {
+                            if (check == true) {
                                 break;
                             }
                         }
@@ -163,7 +163,7 @@ public class Scan_XSS {
                                 check = true;
                                 break;
                             }
-                            if (check = true) {
+                            if (check == true) {
                                 break;
                             }
                         }
