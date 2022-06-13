@@ -20,7 +20,9 @@ public class sensitive_file {
             "7z",
             "bak",
             "log",
-            "mail",};
+            "mail",
+            "txt",
+            "dump",};
     }
 
     public String[] getSenFile() {

@@ -161,7 +161,7 @@ public class Scan_IFrameinjection {
                                 check = true;
                                 break;
                             }
-                            if(check = true){
+                            if(check == true){
                                 break;
                             }
                         }

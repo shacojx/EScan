@@ -5,6 +5,7 @@
 package Scan.A5SecurityMisconfiguration;
 
 import FunctionPlus.HttpCommon;
+import PayloadSignature.A4InsecureDesign.sensitive_file;
 import PayloadSignature.A5SecurityMisconfiguration.Backup_And_Unreferenced_Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,87 +26,58 @@ public class Scan_Backup_And_Unreferenced_File {
     public String signaturex;
 
     public boolean Scan(String domain) {
-        Scan_Backup_And_Unreferenced_File scan_bakk = new Scan_Backup_And_Unreferenced_File();
-        List<String> list_file = scan_bakk.CheckBackupFile(domain);
-        Backup_And_Unreferenced_Files BackUpFile = new Backup_And_Unreferenced_Files();
-        payloadx = BackUpFile.getPayload();;
-        if (list_file.size() == 0) {
-            return false;
-        } else {
-            return true;
-        }
-
-    }
-
-    public List<String> CheckBackupFile(String domain) {
-        List<String> ListLink = new ArrayList<>();
         try {
-            String url = "";
-
-            Backup_And_Unreferenced_Files BackUpFile = new Backup_And_Unreferenced_Files();
-            BackUpFile.setDomain(domain);
-            url = BackUpFile.getPayload();
-            payloadx = BackUpFile.getPayload();
-            paramx = "";
-            signaturex = "";
-            String html = getHtml(url);
-            ListLink = getHref(html, domain);
-            for (int i = 0; i < ListLink.size(); i++) {
-                if (!ListLink.get(i).contains(domain)) ;
-                {
-                    ListLink.remove(i);
-                }
-
+            domain = domain.replaceAll("http://", "");
+            domain = domain.replaceAll("https://", "");
+            domain = domain.replaceAll("/", "");
+            domain = domain.replaceAll("www.", "");
+            sensitive_file sf = new sensitive_file();
+            String[] InText = sf.getSenFile();
+            String intext = "";
+            for (String x : InText) {
+                intext = intext + "|" + x;
+            }
+            String query = "site:" + domain + " intext:(" + intext + ")";
+            boolean check = checkfile(query);
+            if (check) {
+                paramx = "";
+                payloadx = query;
+                signaturex = "";
+                return true;
+            } else {
+                return false;
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return false;
         }
-        return ListLink;
+
     }
 
-    private String getHtml(String url) {
+    private boolean checkfile(String query) {
         try {
             OkHttpClient client = HttpCommon.getInstance().getHttpClient().newBuilder()
                     .build();
             Request request = new Request.Builder()
-                    .url(url)
+                    .url("https://www.google.com/search?q=" + query)
                     .method("GET", null)
-                    .addHeader("Host", "www.google.com.vn")
+                    .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36")
+                    .addHeader("Sec-Ch-Ua-Platform", "\"Windows\"")
+                    .addHeader("Upgrade-Insecure-Requests", "1")
                     .build();
             Response response = client.newCall(request).execute();
             if (!response.isSuccessful()) {
                 response.close();
             }
-            return response.body().string();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return "";
-
-    }
-
-    public List<String> getHref(String html, String domain) {
-        List listUrl = new ArrayList();
-        try {
-            Pattern p = Pattern.compile("href=[\\\"\\\']([^\\\"\\\']*)[\\\"\\\']");
-            Matcher m = p.matcher(html);
-            String url = "";
-            while (m.find()) {
-                url = m.group(0); // this variable should contain the link URL
-                url = url.replaceAll("href=\"", "");
-                url = url.replaceAll("href=\'", "");
-                url = url.replaceAll("\">", "");
-                url = url.replaceAll("\'>", "");
-                url = url.replaceAll("\"", "");
-                url = url.replaceAll("\'", "");
-                url = url.trim();
-                if (!url.contains("javascript") && url.contains("/url?q=") && !url.contains("https://accounts.google.com/")) {
-                    listUrl.add(url);
-                }
+            String html = response.body().string();
+            if (html.contains("role=\"text\"")) {
+                signaturex = "role=\"text\"";
+                return true;
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return listUrl;
+        return false;
+
     }
 }
