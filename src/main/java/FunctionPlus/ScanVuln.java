@@ -110,8 +110,11 @@ public class ScanVuln {
             EScan.GhiLog(datalog);
         }
         
-        
-        boolean check_bak = scan_bak.Scan(url);
+        String domain = url.replaceAll("://", "");
+        domain = domain.replaceAll("/", "");
+        domain = domain.replaceAll("http", "");
+        domain = domain.replaceAll("https", "");
+        boolean check_bak = scan_bak.Scan(domain);
         if (check_bak == true) {
             String datalog = "[Vuln] Backup And Unreferenced File";
             EScan.GhiLog(datalog);

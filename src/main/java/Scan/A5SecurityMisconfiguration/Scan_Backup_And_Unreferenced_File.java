@@ -27,6 +27,8 @@ public class Scan_Backup_And_Unreferenced_File {
     public boolean Scan(String domain) {
         Scan_Backup_And_Unreferenced_File scan_bakk = new Scan_Backup_And_Unreferenced_File();
         List<String> list_file = scan_bakk.CheckBackupFile(domain);
+        Backup_And_Unreferenced_Files BackUpFile = new Backup_And_Unreferenced_Files();
+        payloadx = BackUpFile.getPayload();;
         if (list_file.size() == 0) {
             return false;
         } else {
@@ -43,7 +45,7 @@ public class Scan_Backup_And_Unreferenced_File {
             Backup_And_Unreferenced_Files BackUpFile = new Backup_And_Unreferenced_Files();
             BackUpFile.setDomain(domain);
             url = BackUpFile.getPayload();
-            payloadx = url;
+            payloadx = BackUpFile.getPayload();
             paramx = "";
             signaturex = "";
             String html = getHtml(url);
