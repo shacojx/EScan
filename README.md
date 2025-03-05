@@ -5,7 +5,7 @@
 
 ## Scannable web type 
 
-- **PHP**: PHP , dotNet (aspx), Java (jsp, servlet)
+- **type**: PHP , dotNet (aspx), Java (jsp, servlet)
 
 ## Scannable vulnerability type 
 
